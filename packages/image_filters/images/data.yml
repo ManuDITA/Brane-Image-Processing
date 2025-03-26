@@ -4,6 +4,6 @@ owners:
 - Emanuele Simeone
 description: Images for stuff
 
-# This is the real magic: we tell Brane we mean this file
+# Specifying the whole data folder (data) for our images dataset
 access: !file
   path: ./data

@@ -22,7 +22,6 @@ files:
   - image_filters.py
   - __init__.py
   - Pipfile.lock
-  - images/data/image.png
 
 unpack:
   - pipenv install --system --deploy

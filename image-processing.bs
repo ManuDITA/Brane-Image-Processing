@@ -6,9 +6,10 @@ import image_filters;
     println("Hello, world!");
     
     let grayimage := grayscale(new Data{ name := "data_images" });
-    let blurimage := blur("images/image.png");
+    //let blurimage := blur("images/image.png");
+    
 
     commit_result("outputdata", grayimage);
-    commit_result("outputdata", blurimage);
+    //commit_result("outputdata", blurimage);
     return "Finish";
 }

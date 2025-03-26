@@ -36,13 +36,17 @@ def main():
     command = sys.argv[1]
     
     if command == "grayscale":
-        images_path = json.loads(os.environ['IMAGE_PATH'])
-
-        output_path = f"/result/grayscaled_{os.path.basename(images_path)}"
-        print("Applying grayscale filter")
-        print(os.listdir('.'))
-        print(os.listdir('images/data'))
-        grayscale_image(images_path, output_path)
+        #loading a dataset folder path now. It is a folder with images inside
+        print("Applying grayscale filter to dataset")
+        source_images_path = json.loads(os.environ['IMAGE_PATH'])
+        result_folder = "/result"
+        
+        for filename in os.listdir(source_images_path):
+            image_path = os.path.join(source_images_path, filename)
+            if os.path.isfile(image_path):
+                output_path = os.path.join(result_folder, f"grayscaled_{filename}")
+                print(f"Applying grayscale filter to {image_path}")
+                grayscale_image(image_path, output_path)
 
     
     if command == "blur":
