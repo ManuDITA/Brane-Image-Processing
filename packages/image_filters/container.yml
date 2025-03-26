@@ -50,6 +50,8 @@ actions:
     input:
       - name: image_path
         type: IntermediateResult
+      - name: kernel_size
+        type: int
     output:
       - name: output
         type: IntermediateResult

@@ -6,7 +6,7 @@ import image_filters;
     println("Hello, world!");
     
     let grayimage_dataset := grayscale(new Data{ name := "data_images" });
-    let blurimage_dataset := blur(grayimage_dataset);
+    let blurimage_dataset := blur(grayimage_dataset, 15);
     
 
     commit_result("outputdata", blurimage_dataset);

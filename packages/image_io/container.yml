@@ -1,4 +1,4 @@
-name: images_io
+name: image_io
 version: 1.0.0
 kind: ecu # Executable Code Unit
 
@@ -40,7 +40,7 @@ actions:
       - load_images
     input:
       - name: images_path
-        type: string
+        type: IntermediateResult
     output:
       - name: output
         type: IntermediateResult

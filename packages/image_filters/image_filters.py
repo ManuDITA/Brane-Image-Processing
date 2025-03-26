@@ -26,20 +26,24 @@ def grayscale_image(image_path, output_path):
     cv2.imwrite(output_path, gray_image)
 
     
-def blur(image_path, output_path, kernel_size=5):
+def blur_image(image_path, output_path, kernel_size=5):
 
+    if kernel_size % 2 == 0:
+        kernel_size += 1  # Make it odd
+    if kernel_size <= 0:
+        kernel_size = 1   # Set a default valid value
     image = cv2.imread(image_path)
     blurred_image = cv2.GaussianBlur(image, (kernel_size, kernel_size), 0)
     cv2.imwrite(output_path, blurred_image)
 
 def main():
     command = sys.argv[1]
+    source_images_path = json.loads(os.environ['IMAGE_PATH'])
+    result_folder = "/result"
     
     if command == "grayscale":
         #loading a dataset folder path now. It is a folder with images inside
         print("Applying grayscale filter to dataset")
-        source_images_path = json.loads(os.environ['IMAGE_PATH'])
-        result_folder = "/result"
         
         for filename in os.listdir(source_images_path):
             image_path = os.path.join(source_images_path, filename)
@@ -53,15 +57,14 @@ def main():
     if command == "blur":
         
         print("Applying blur filter to dataset")
-        source_images_path = json.loads(os.environ['IMAGE_PATH'])
-        result_folder = "/result"
-        
+        kernel_size = json.loads(os.environ['KERNEL_SIZE'])
+
         for filename in os.listdir(source_images_path):
             image_path = os.path.join(source_images_path, filename)
             if os.path.isfile(image_path):
                 image_output_path = os.path.join(result_folder, f"blurred_{filename}")
                 print(f"Applying grayscale filter to {image_path}")
-                blur(image_path, image_output_path)
+                blur_image(image_path, image_output_path, kernel_size)
 
     #print(yaml.dump({"output": output_path}))
 
