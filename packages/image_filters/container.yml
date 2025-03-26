@@ -49,7 +49,7 @@ actions:
       - blur
     input:
       - name: image_path
-        type: string
+        type: IntermediateResult
     output:
       - name: output
         type: IntermediateResult

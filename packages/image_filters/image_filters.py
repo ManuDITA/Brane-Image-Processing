@@ -44,18 +44,26 @@ def main():
         for filename in os.listdir(source_images_path):
             image_path = os.path.join(source_images_path, filename)
             if os.path.isfile(image_path):
-                output_path = os.path.join(result_folder, f"grayscaled_{filename}")
+                image_output_path = os.path.join(result_folder, f"grayscaled_{filename}")
                 print(f"Applying grayscale filter to {image_path}")
-                grayscale_image(image_path, output_path)
-
+                grayscale_image(image_path, image_output_path)
+                
+        return result_folder
     
     if command == "blur":
-        images_path = json.loads(os.environ['IMAGE_PATH'])
-        output_path = f"/result/blurred_{os.path.basename(images_path)}"
-        print("Applying blur filter")
-        blur(images_path, output_path)
+        
+        print("Applying blur filter to dataset")
+        source_images_path = json.loads(os.environ['IMAGE_PATH'])
+        result_folder = "/result"
+        
+        for filename in os.listdir(source_images_path):
+            image_path = os.path.join(source_images_path, filename)
+            if os.path.isfile(image_path):
+                image_output_path = os.path.join(result_folder, f"blurred_{filename}")
+                print(f"Applying grayscale filter to {image_path}")
+                blur(image_path, image_output_path)
 
-    print(yaml.dump({"output": output_path}))
+    #print(yaml.dump({"output": output_path}))
 
 if __name__ == '__main__':
     main()
