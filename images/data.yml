@@ -1,0 +1,9 @@
+# Set some metadata for this dataset
+name: data_images
+owners:
+- Emanuele Simeone
+description: Images for stuff
+
+# Specifying the whole data folder (data) for our images dataset
+access: !file
+  path: ./data

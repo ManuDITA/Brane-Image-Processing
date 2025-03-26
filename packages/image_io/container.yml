@@ -22,8 +22,6 @@ files:
   - run.py
   - __init__.py
   - Pipfile.lock
-  - images/image.png
-  - startup.py
 
 unpack:
   - pipenv install --system --deploy
@@ -41,6 +39,19 @@ actions:
     input:
       - name: images_path
         type: IntermediateResult
+    output:
+      - name: output
+        type: IntermediateResult
+  'convert_format':
+    command:
+      capture: marked
+      args:
+      - convert_format
+    input:
+      - name: images_path
+        type: IntermediateResult
+      - name: target_format
+        type: string
     output:
       - name: output
         type: IntermediateResult

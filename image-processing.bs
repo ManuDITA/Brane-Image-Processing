@@ -1,14 +1,21 @@
-import images_io;
+import image_io;
 import image_filters;
 
 #[on("localhost")]
 {
     println("Hello, world!");
-    
-    let grayimage_dataset := grayscale(new Data{ name := "data_images" });
-    let blurimage_dataset := blur(grayimage_dataset, 15);
-    
 
-    commit_result("outputdata", blurimage_dataset);
+    let image_dataset := load_images(new Data{ name := "data_images" });
+    let converted_dataset := convert_format(image_dataset, "jpg");
+    //commit_result("convertedData", converted_dataset);
+    //let face_detected := face_detection(converted_dataset);
+    let grayimage_dataset := grayscale(converted_dataset);
+    //let blurimage_dataset := blur(grayimage_dataset, 15);
+
+    //let edge_detected := edge_detection(new Data {name := "data_images"});
+
+    commit_result("endresult", grayimage_dataset);
+    //commit_result("outputdata", edge_detected);
+    //commit_result("outputdata", blurimage_dataset);
     return "Finish";
 }

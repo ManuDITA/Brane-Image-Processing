@@ -37,7 +37,7 @@ actions:
       args:
       - grayscale
     input:
-      - name: image_path
+      - name: images_path
         type: IntermediateResult
     output:
       - name: output
@@ -48,10 +48,32 @@ actions:
       args:
       - blur
     input:
-      - name: image_path
+      - name: images_path
         type: IntermediateResult
       - name: kernel_size
         type: int
+    output:
+      - name: output
+        type: IntermediateResult
+  'edge_detection':
+    command:
+      capture: marked
+      args:
+      - edge_detection
+    input:
+      - name: images_path
+        type: IntermediateResult
+    output:
+      - name: output
+        type: IntermediateResult
+  'face_detection':
+    command:
+      capture: marked
+      args:
+      - face_detection
+    input:
+      - name: images_path
+        type: IntermediateResult
     output:
       - name: output
         type: IntermediateResult
