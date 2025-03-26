@@ -1,0 +1,46 @@
+name: images_io
+version: 1.0.0
+kind: ecu # Executable Code Unit
+
+description: ""
+
+dependencies:
+  - python3
+  - python3-yaml
+  
+install:
+  - apt update && apt upgrade -y
+  - apt install pipenv -y
+  - apt install -y iputils-ping
+  - apt install -y libgl1
+  #installing required libs for opencv in noninteractive session
+  - DEBIAN_FRONTEND=noninteractive apt install -y libglib2.0-0
+  - pip install numpy
+
+files:
+  - Pipfile
+  - run.py
+  - __init__.py
+  - Pipfile.lock
+  - images/image.png
+  - startup.py
+
+unpack:
+  - pipenv install --system --deploy
+
+entrypoint:
+  kind: task
+  exec: run.py
+
+actions:
+  'load_images':
+    command:
+      capture: marked
+      args:
+      - load_images
+    input:
+      - name: images_path
+        type: string
+    output:
+      - name: output
+        type: IntermediateResult

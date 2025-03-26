@@ -1,0 +1,9 @@
+# Set some metadata for this dataset
+name: data_images
+owners:
+- Emanuele Simeone
+description: Images for stuff
+
+# This is the real magic: we tell Brane we mean this file
+access: !file
+  path: ./data

@@ -1,0 +1,14 @@
+import images_io;
+import image_filters;
+
+#[on("localhost")]
+{
+    println("Hello, world!");
+    
+    let grayimage := grayscale(new Data{ name := "data_images" });
+    let blurimage := blur("images/image.png");
+
+    commit_result("outputdata", grayimage);
+    commit_result("outputdata", blurimage);
+    return "Finish";
+}
