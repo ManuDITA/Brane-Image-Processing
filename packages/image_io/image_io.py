@@ -1,26 +1,9 @@
 #!/usr/bin/env python3
-
 import cv2
 import os
 import sys
 import json
-import socket
-
-def save_image(image, filename: str, output_folder: str):
-    """
-    Saves the processed image to the output folder with the specified filename.
-    
-    Args:
-        image: The image to save.
-        filename (str): The desired filename (including extension).
-        output_folder (str): The folder where the image should be saved.
-    """
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-    
-    output_path = os.path.join(output_folder, filename)
-    cv2.imwrite(output_path, image)
-    print(f"Image saved at {output_path}")
+import csv
 
 def load_images(input_folder: str):
     """
@@ -29,7 +12,6 @@ def load_images(input_folder: str):
 
     Args:
         input_folder (str): The folder path containing images and subfolders.
-        output_folder (str): The destination folder where images will be saved.
     """
     print("Processing images recursively...")
     output_folder = "/result"
@@ -83,6 +65,64 @@ def convert_format(images_path, target_format: str):
             else:
                 print(f"Error converting {filename} to {target_format}")
 
+def extract_metadata(image_path):
+    """
+    Extracts metadata from an image.
+    
+    Args:
+        image_path (str): Path to the image.
+    
+    Returns:
+        dict: Metadata dictionary.
+    """
+    metadata = {
+        "Filename": os.path.basename(image_path),
+        "Width": None,
+        "Height": None,
+        "Format": None
+    }
+
+    # Load image with OpenCV
+    image = cv2.imread(image_path)
+    if image is not None:
+        # Get image dimensions
+        metadata["Width"], metadata["Height"] = image.shape[1], image.shape[0]
+        
+        # Get image format (extension based on filename)
+        metadata["Format"] = os.path.splitext(image_path)[-1].lower()
+
+    return metadata
+
+def extract_metadata_to_csv(images_input_folder, output_csv="metadata.csv"):
+    """
+    Extracts metadata from all images in a folder (recursively) and saves to a CSV file.
+    
+    Args:
+        images_input_folder (str): The folder containing images.
+        output_csv (str): Output CSV file path.
+    """
+    images_metadata = []
+    output_folder="/result"
+    output_path = os.path.join(output_folder, output_csv)
+                        
+    for root, _, files in os.walk(images_input_folder):
+        for file in files:
+            if file.lower().endswith((".jpg", ".jpeg", ".png", ".tiff", ".bmp", ".gif")):
+                print(f"Extracting metadata from: {file}")
+                image_path = os.path.join(root, file)
+                metadata = extract_metadata(image_path)
+                images_metadata.append(metadata)
+    
+    # Write to CSV
+    if images_metadata:
+        with open(output_path, mode="w", newline="") as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=images_metadata[0].keys())
+            writer.writeheader()
+            writer.writerows(images_metadata)
+    
+    print(f"Metadata saved to {output_path}")
+    
+
 def main():
     command = sys.argv[1]
     images_path = json.loads(os.environ['IMAGES_PATH'])
@@ -94,6 +134,10 @@ def main():
     if command == "convert_format":
         target_format = json.loads(os.environ['TARGET_FORMAT'])
         convert_format(images_path, target_format)
+        
+    if command == "extract_metadata":
+        output_csv = json.loads(os.environ['OUTPUT_CSV'])
+        extract_metadata_to_csv(images_path, output_csv)
 
 if __name__ == '__main__':
     main()

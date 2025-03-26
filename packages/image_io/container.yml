@@ -19,7 +19,7 @@ install:
 
 files:
   - Pipfile
-  - run.py
+  - image_io.py
   - __init__.py
   - Pipfile.lock
 
@@ -28,7 +28,7 @@ unpack:
 
 entrypoint:
   kind: task
-  exec: run.py
+  exec: image_io.py
 
 actions:
   'load_images':
@@ -51,6 +51,19 @@ actions:
       - name: images_path
         type: IntermediateResult
       - name: target_format
+        type: string
+    output:
+      - name: output
+        type: IntermediateResult
+  'extract_metadata':
+    command:
+      capture: marked
+      args:
+      - extract_metadata
+    input:
+      - name: images_path
+        type: IntermediateResult
+      - name: output_csv
         type: string
     output:
       - name: output

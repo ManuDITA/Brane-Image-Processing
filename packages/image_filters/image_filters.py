@@ -4,8 +4,6 @@ import cv2
 import os
 import sys
 import json
-import yaml
-import socket
 
 def edge_detection_image(image_path, output_path, threshold1=100, threshold2=200):
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)  # Convert to grayscale first
@@ -32,14 +30,12 @@ def detect_faces(image_path, output_path, scale_factor=1.1, min_neighbors=5):
 
     print(f"Detected {len(faces)} faces in {image_path}. Output saved at {output_path}.")
 
-
 def grayscale_image(image_path, output_path):
 
     image = cv2.imread(image_path) 
     # Convert to grayscale
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     cv2.imwrite(output_path, gray_image)
-
     
 def blur_image(image_path, output_path, kernel_size=5):
 
@@ -57,7 +53,7 @@ def main():
     result_folder = "/result"
     
     if command == "grayscale":
-        #loading a dataset folder path now. It is a folder with images inside
+        
         print("Applying grayscale filter to dataset")
         
         for filename in os.listdir(source_images_path):
@@ -102,8 +98,6 @@ def main():
                 image_output_path = os.path.join(result_folder, f"face_detected_{filename}")
                 print(f"Applying face_detection filter to {image_path}")
                 detect_faces(image_path, image_output_path)
-
-    #print(yaml.dump({"output": output_path}))
 
 if __name__ == '__main__':
     main()
