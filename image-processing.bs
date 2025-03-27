@@ -3,22 +3,31 @@ import image_filters;
 
 #[on("localhost")]
 {
-    println("Hello, world!");
+    println("Image processing pipeline starting");
 
+    println("Loading dataset (removes dirs and non-image files)");
     let image_dataset := load_images(new Data{ name := "data_images" });
+
+    println("Converting images in jpg");
     let converted_dataset := convert_format(image_dataset, "jpg");
-    //commit_result("convertedData", converted_dataset);
-    let face_detected := face_detection(converted_dataset);
+
+    println("Applying gray filter");
     let grayimage_dataset := grayscale(converted_dataset);
-    //let blurimage_dataset := blur(grayimage_dataset, 15);
 
-    //let edge_detected := edge_detection(new Data {name := "data_images"});
+    println("Applying blur to grayed images (kernel size=15)");
+    let blurimage_dataset := blur(grayimage_dataset, 15);
 
-    let extracted_md := extract_metadata(grayimage_dataset, "grayed_images_metadata.csv");
-    commit_result("outmetadata", extracted_md);
+    println("Detect faces in pictures");
+    let face_detected := face_detection(blurimage_dataset);
+    
+    println("Extract images metadata, save in edited_images.csv");
+    let metadata_file := extract_metadata(face_detected, "edited_images.csv");
 
-    commit_result("endresult", grayimage_dataset);
-    //commit_result("outputdata", edge_detected);
-    //commit_result("outputdata", blurimage_dataset);
+    println("Commit metadata");
+    commit_result("metadata_result", metadata_file);
+
+    println("Commit edited images");
+    commit_result("output_data", face_detected);
+
     return "Finish";
 }
