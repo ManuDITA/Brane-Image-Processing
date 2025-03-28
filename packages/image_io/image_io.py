@@ -65,7 +65,7 @@ def convert_format(images_path, target_format: str):
             else:
                 print(f"Error converting {filename} to {target_format}")
 
-def extract_metadata(image_path):
+def get_image_metadata(image_path):
     """
     Extracts metadata from an image.
     
@@ -93,7 +93,7 @@ def extract_metadata(image_path):
 
     return metadata
 
-def extract_metadata_to_csv(images_input_folder, output_csv="metadata.csv"):
+def extract_metadata(images_input_folder, output_csv="metadata.csv"):
     """
     Extracts metadata from all images in a folder (recursively) and saves to a CSV file.
     
@@ -110,7 +110,7 @@ def extract_metadata_to_csv(images_input_folder, output_csv="metadata.csv"):
             if file.lower().endswith((".jpg", ".jpeg", ".png", ".tiff", ".bmp", ".gif")):
                 print(f"Extracting metadata from: {file}")
                 image_path = os.path.join(root, file)
-                metadata = extract_metadata(image_path)
+                metadata = get_image_metadata(image_path)
                 images_metadata.append(metadata)
     
     # Write to CSV
@@ -128,7 +128,6 @@ def main():
     images_path = json.loads(os.environ['IMAGES_PATH'])
     
     if command == "load_images":
-        #images_path = "images/"
         load_images(images_path)
 
     if command == "convert_format":
@@ -137,7 +136,7 @@ def main():
         
     if command == "extract_metadata":
         output_csv = json.loads(os.environ['OUTPUT_CSV'])
-        extract_metadata_to_csv(images_path, output_csv)
+        extract_metadata(images_path, output_csv)
 
 if __name__ == '__main__':
     main()
